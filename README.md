@@ -6,7 +6,7 @@ By default, Active Storage stores the files in a folder inside the project folde
 
 ## Configuring active storage
 
-First of all, add activestorage in Gemfile.
+#### First of all, add activestorage in Gemfile.
 
 ```
 gem 'activestorage'
@@ -14,7 +14,7 @@ gem 'activestorage'
 
 After it, run `bundle install`.
 
-Second step: create a new migration for store metadata about the files.
+#### Second step: create a new migration for store metadata about the files.
 
 ```
 rails active_storage:install
@@ -30,7 +30,7 @@ After it, run the migration.
 rails db:migrate
 ```
 
-Third step: in your model when you'll use the storage, add the following line 
+#### Third step: in your model when you'll use the storage, add the following line 
 
 ```
 has_one_attached :my_file
@@ -55,7 +55,7 @@ gem 'aws-sdk-s3', require: false
 
 After it, run `bundle install`.
 
-Second step: in the `config/storage.yml` file change the amazon commented lines as the example below.
+#### Second step: in the `config/storage.yml` file change the amazon commented lines as the example below.
 
 ```
 amazon:
@@ -88,7 +88,9 @@ amazon_prod:
   bucket: MY-BUCKET-NAME-PROD
 ```
 
-Third step: create an .env and .env.sample files with your environment variables, that changes between development, staging and production. Here we'll add the sensitive values that can't be hardcoded. To create that files, run `touch .env` and `touch .env.sample`. In both files write something like it
+#### Third step: create an .env and .env.sample files 
+
+We need to create a .env and .env.sample files with your environment variables, that changes between development, staging and production. Here we'll add the sensitive values that can't be hardcoded. To create that files, run `touch .env` and `touch .env.sample`. In both files write something like it
 
 ```
 AWS_ACCESS_KEY_ID=
@@ -98,7 +100,9 @@ AWS_SECRET_ACCESS_KEY=
 
 In the .env you'll put the true values and the sample file you can keep it like it. Don't forget to add .env in the .gitignore, this file must not be commited!
 
-Fourth step: in `config/environments/development.rb` and `config/environments/production.rb` (and other environments that you want) change the line `config.active_storage.service = :local` to
+#### Fourth step: Setting storage in each environment
+
+In `config/environments/development.rb` and `config/environments/production.rb` (and other environments that you want) change the line `config.active_storage.service = :local` to
 
 ```
 config.active_storage.service = :amazon_dev
