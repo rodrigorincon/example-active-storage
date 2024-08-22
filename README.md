@@ -36,7 +36,7 @@ rails db:migrate
 has_one_attached :my_file
 ```
 
-you can change `my_file` for any other name that makes more sense for your project. For example, in this tutorial I'll store the user photo, so I'll use the name `photo` in the user model.
+you can change `my_file` for any other name that makes more sense for your project. For example, in this tutorial I'll store the user photo, so I'll use the name `photo` in the `app/models/user.rb` model.
 
 ```
 has_one_attached :photo
@@ -117,7 +117,7 @@ Note that we are using the same name we used on storage.yml file. The `config.ac
 
  The configuration above will work, but the file names will be a random string name and without the extension. We can define a familiar name, as the model ID or some other attribute for the image. In this tutorial I'll use the user email to name the file. 
 
-To do it, create a concern to be used for all models that use Active Storage. Let's name this concern as `attached_image_handler.rb`.
+To do it, create a concern to be used for all models that use Active Storage. Let's name this concern as `app/models/concerns/attached_image_handler.rb`.
 
 attached_image_handler.rb
 ```
@@ -155,6 +155,7 @@ The `image_url` is the method to get the URL for the file on S3. It's the same a
 
 The last thing we need to do is add the concern in our models. In this tutorial we just need to add it in `user.rb` model.
 
+app/models/user.rb
 ```
 include AttachedImageHandler
 ```
