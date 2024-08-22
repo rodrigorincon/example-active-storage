@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 30 } %>
+  host: <%= ENV.fetch("APP_DB_HOST") { 'localhost' } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { '' } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { '' } %>
+  port: 5432
+
+development:
+  <<: *default
+  database: tesouro_development
+
+test:
+  <<: *default
+  database: tesouro_test
+
+production:
+  <<: *default
+  database: tesouro_production
+  username: tesouro
+  password: <%= ENV['TESOURO_DATABASE_PASSWORD'] %>

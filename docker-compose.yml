@@ -1,0 +1,33 @@
+version: '2'
+services:
+  example_storage_app:
+    build: .
+    container_name: example_storage_app
+    command: bash start.sh
+    env_file:
+      .env
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - example_storage_db
+    links:
+      - example_storage_db
+    networks:
+      - example_storage
+
+  example_storage_db:
+    container_name: example_storage_db
+    image: postgres:11.1
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./db:/docker-entrypoint
+    env_file:
+      .env
+    networks:
+      - example_storage
+
+networks:
+  example_storage:
