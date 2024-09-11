@@ -63,29 +63,29 @@ amazon:
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
   region: <%= ENV["AWS_REGION"] %>
-  bucket: MY-BUCKET-NAME
+  bucket: <%= ENV["MY_BUCKET_NAME"] %>
 ```
 
 Here we're configurating how the project will storage the files in which case. This file shows where the files must be stored when we use local filesystem, amazon, azure and other solutions. Each solution has a key and its configuration attributes.
 
 In the amazon case, the attributes are the AWS service (S3), access key and secret, region and bucket name. More optional attributes can be used. To know more about, read the documentation here [https://guides.rubyonrails.org/active_storage_overview.html](https://guides.rubyonrails.org/active_storage_overview.html).
 
-If you want to keep the environment buckets separated, you can do it something like it.
+If you need more than 1 S3 configuration (maybe to store different things) you can do it something like it.
 
 ```
-amazon_dev:
+amazon_user_photos:
   service: S3
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
   region: <%= ENV["AWS_REGION"] %>
-  bucket: MY-BUCKET-NAME-DEV
+  bucket: <%= ENV["MY_BUCKET_NAME_USER_PHOTO"] %>
 
-amazon_prod:
+amazon_post_images:
   service: S3
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
   region: <%= ENV["AWS_REGION"] %>
-  bucket: MY-BUCKET-NAME-PROD
+  bucket: <%= ENV["MY_BUCKET_NAME_POST_IMAGE"] %>
 ```
 
 #### Third step: create an .env and .env.sample files 
@@ -96,6 +96,7 @@ We need to create a .env and .env.sample files with your environment variables, 
 AWS_ACCESS_KEY_ID=
 AWS_REGION=
 AWS_SECRET_ACCESS_KEY=
+MY_BUCKET_NAME=
 ```
 
 In the .env you'll put the true values and the sample file you can keep it like it. Don't forget to add .env in the .gitignore, this file must not be commited!
@@ -105,11 +106,11 @@ In the .env you'll put the true values and the sample file you can keep it like 
 In `config/environments/development.rb` and `config/environments/production.rb` (and other environments that you want) change the line `config.active_storage.service = :local` to
 
 ```
-config.active_storage.service = :amazon_dev
+config.active_storage.service = :amazon_user_photos
 config.active_storage.prefix = "folder-name"
 ```
 
-Note that we are using the same name we used on storage.yml file. The `config.active_storage.service` line define which of the definitions created on storage file will be used by active storage. So in this example, `config/environments/development.rb` will have `config.active_storage.service = :amazon_dev` and `config/environments/production.rb` will have `config.active_storage.service = :amazon_prod`.
+Note that we are using the same name we used on storage.yml file. The `config.active_storage.service` line define which of the definitions created on storage file will be used by active storage. 
 
  The `config.active_storage.prefix = "folder-name"` define with folder inside the bucket will store the files. If you want to store on the root you don't need to use this line. Unfortenally the storage.yml doesn't support this behavior, so we need to define it in these files.
 
